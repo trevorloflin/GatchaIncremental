@@ -1,0 +1,62 @@
+
+h1, h2 {
+    text-align: center;
+}
+
+#app {
+    display: flex;
+}
+
+#left-panel {
+    padding: 0 30px;
+}
+
+#main-panel {
+    flex-grow: 1;
+}
+
+#main-actions {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+#current-card {
+    display: flex;
+    justify-content: center;
+    background-color: #EEE;
+    padding: 20px;
+}
+
+.card {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    background-color: #FFF;
+}
+
+.card .card-name {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    height: 30px;
+}
+
+.card .card-picture {
+    margin: 10px;
+    height: 200px;
+    background-color: #FCF;
+    border-radius: 5px;
+}
+
+.card .card-type {
+    position: absolute;
+    top: 250px;
+    left: 10px;
+}
+
+.card .card-rank {
+    position: absolute;
+    top: 250px;
+    right: 10px;
+}
