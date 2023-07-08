@@ -14,6 +14,7 @@ export default function CardDOM(props: CardDOMProps) {
             <div className='card-picture'></div>
             <span className='card-type'>{props.Card.Type}</span>
             <span className='card-rank'>Rank: {stars}</span>
+            <span className='card-material'>Material: {props.Card.Material}</span>
         </div>
     );
 }
