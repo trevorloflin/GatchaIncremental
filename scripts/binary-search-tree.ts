@@ -31,10 +31,10 @@ export default class BinarySearchTree<T> {
 
         const itemComparison = this.compare(item, this._item);
 
-        const lowerItem = itemComparison < 0 ? { item, cachedValue } : { item: this._item, cachedValue: this._cachedValue };
-        const higherItem = itemComparison < 0 ? { item: this._item, cachedValue: this._cachedValue } : { item, cachedValue };
+        const lowerItem = (itemComparison < 0) ? { item, cachedValue } : { item: this._item, cachedValue: this._cachedValue };
+        const higherItem = (itemComparison < 0) ? { item: this._item, cachedValue: this._cachedValue } : { item, cachedValue };
 
-        if (this._lower?._weight ?? 0 < this._higher?._weight ?? 0) {
+        if ((this._lower?._weight ?? 0) < (this._higher?._weight ?? 0)) {
             if (this._lower == null) {
                 this._lower = new BinarySearchTree<T>(this._accessor, lowerItem.item);
                 this._lower._cachedValue = lowerItem.cachedValue;
@@ -61,7 +61,7 @@ export default class BinarySearchTree<T> {
         this._weight -= 1;
 
         if (item === this._item) {
-            if (this._lower?._weight ?? 0 >= this._higher?._weight ?? 0) {
+            if ((this._lower?._weight ?? 0) >= (this._higher?._weight ?? 0)) {
                 this._item = this._lower?.getHighest();
                 this._cachedValue = this._lower?.getHighestCache();
 
@@ -83,7 +83,7 @@ export default class BinarySearchTree<T> {
 
             this._lower.remove(item);
 
-            if (this._lower._weight + 1 < this._higher?._weight ?? 0) {
+            if ((this._lower._weight + 1) < (this._higher?._weight ?? 0)) {
                 this._lower.add(this._item, this._cachedValue);
 
                 this._item = this._higher.getLowest();
@@ -96,7 +96,7 @@ export default class BinarySearchTree<T> {
 
             this._higher.remove(item);
 
-            if (this._higher._weight + 1 < this._lower?._weight ?? 0) {
+            if ((this._higher._weight + 1) < (this._lower?._weight ?? 0)) {
                 this._higher.add(this._item, this._cachedValue);
 
                 this._item = this._lower.getHighest();
