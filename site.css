@@ -60,3 +60,9 @@ h1, h2 {
     top: 250px;
     right: 10px;
 }
+
+.card .card-material {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
