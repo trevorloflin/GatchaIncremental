@@ -37,7 +37,6 @@ export default class Gatcha {
         var randomKey = Object.keys(options)[randomNum];
 
         var selectedOption = options[randomKey];
-        // uses while for type assertion, should only execute once
         if (selectedOption == null || typeof selectedOption === 'number') {
             this.GenerateOptionsTable(options);
             selectedOption = options[randomKey];
@@ -66,7 +65,7 @@ export default class Gatcha {
 
         const tree = new BinarySearchTree<{ name: string, value: number}>(i => i.value);
 
-        for (const key in keys) {
+        for (const key of keys) {
             tree.add({ name: key, value: (options[key] as number) / sum * count });
         }
 
