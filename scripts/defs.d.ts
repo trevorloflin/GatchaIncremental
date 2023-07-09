@@ -8,7 +8,7 @@ declare class Card {
     Action: string;
     Edition: number;
     Material: string;
-    Condition: CardCondition;
+    Condition: string;
     Rarity: number;
     Power: number;
     Value: number;
@@ -31,16 +31,7 @@ declare enum CardTypes {
 
 }
 
-declare enum CardMaterial {
-    cardboard = "Cardboard",
-    copper = "Copper Foil",
-    silver = "Silver Foil",
-    gold = "Gold Foil",
-    diamond = "Diamond Dust",
-    rainbow = "Rainbow Coating"
-}
-
-declare enum CardCondition {
+declare const enum CardCondition {
     Mint = "Mint",
     NearMint = "Near Mint",
     Excellent = "Excellent",

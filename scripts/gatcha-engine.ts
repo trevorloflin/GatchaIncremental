@@ -24,7 +24,7 @@ export default class Gatcha {
             Description: '',
             Action: '',
             Edition: 1,
-            Condition: CardCondition.Mint,
+            Condition: 'Mint',
             Rarity: 1,
             Power: 1,
             Value: 1,
