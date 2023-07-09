@@ -46,9 +46,9 @@ export default class Gatcha {
 
     public static GetCard() : Card {
         
-        var cardNum = Math.floor(Math.random() * (this.ExistingCards.length + 1));
+        var cardNum = Math.floor(Math.random() * (this.ExistingCards.length + 10));
 
-        const card = cardNum === this.ExistingCards.length ? this.GenerateCard() : this.ExistingCards[cardNum];
+        const card = cardNum >= this.ExistingCards.length ? this.GenerateCard() : this.ExistingCards[cardNum];
 
         if (cardNum === this.ExistingCards.length) {
             this.ExistingCards.push(card);
