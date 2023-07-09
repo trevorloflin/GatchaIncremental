@@ -33,7 +33,7 @@ export default class Gatcha {
     }
 
     private static Select(options: CardFieldOptions) {
-        var randomNum = Math.random() * Object.keys(options).length;
+        var randomNum = Math.floor(Math.random() * Object.keys(options).length);
         var randomKey = Object.keys(options)[randomNum];
 
         var selectedOption = options[randomKey];
