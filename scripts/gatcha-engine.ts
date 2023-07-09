@@ -1,10 +1,38 @@
 import BinarySearchTree from "./binary-search-tree";
 
 export default class Gatcha {
-    private static CardTypes = {'Character': 1,'Weapon': 1,'Equipment': 1,'Spell': 1,'Skill': 1};
-    private static CharacterFirstNames = {'John': 1, 'Paul': 1, 'George': 1, 'Ringo': 1, 'Matthew': 1, 'Mark': 1, 'Luke': 1};
-    private static CharacterLastNames = {'Smith': 1,'Brown': 1,'Einstein': 1,'Ramanujan': 1};
+    private static CharacterFirstNames = { 'John': 1, 'Paul': 1, 'George': 1, 'Ringo': 1, 'Matthew': 1, 'Mark': 1, 'Luke': 1 };
+    private static CharacterLastNames = { 'Smith': 1,'Brown': 1,'Einstein': 1,'Ramanujan': 1 };
 
+    private static WeaponTypes = { 'Sword': 1, 'Spear': 1, 'Bow': 1, 'Mace': 1 };
+
+    private static EquipmentTypes = { 'Breastplate': 1, 'Greaves': 1, 'Vambraces': 1, 'Helmet': 1, 'Boots': 1 }
+
+    private static Spells = { 'Fireball': 1, 'Lightning Strike': 1, 'Wind Shield': 1 }
+
+    private static Skills = { 'Flash Step': 1, 'Falcon Punch': 1 }
+
+    private static Creatures = { 'Warg': 1, 'Wyvern': 1, 'Goblin': 1, 'Unicorn': 1 }
+
+    private static CardTypes = {
+        'Character': 1,
+        'Weapon': 1,
+        'Equipment': 1,
+        'Spell': 1,
+        'Skill': 1,
+        'Creature': 2,
+    };
+
+    // TODO: maybe C, R, SR, SSR, UR? Or *, **, ***, ****, #?
+    private static CardRanks: CardFieldOptions = {
+        '1': null,
+        '2': 0.15,
+        '3': 0.03,
+        '4': 0.005,
+        '5': 0.001,
+        '6': 0.0001
+    }
+    
     private static CardMaterials: CardFieldOptions = {
         "Cardboard":    null, 
         "Copper Foil":  0.05, 
@@ -14,12 +42,30 @@ export default class Gatcha {
         "Rainbow Coat": 0.0001, 
     };
 
+    private static ExistingCards = [];
+
+    public static GetCard() : Card {
+        
+        var cardNum = Math.floor(Math.random() * this.ExistingCards.length + 1);
+
+        const card = cardNum === this.ExistingCards.length ? this.GenerateCard() : this.ExistingCards[cardNum];
+
+        if (cardNum === this.ExistingCards.length) {
+            this.ExistingCards.push(card);
+        }
+
+        // TODO: populate card-specific properties
+        card.Material = Gatcha.Select(Gatcha.CardMaterials);
+
+        return card;
+    }
+
     public static GenerateCard() : Card {
-        return {
-            Name: `${Gatcha.Select(Gatcha.CharacterFirstNames)} ${Gatcha.Select(Gatcha.CharacterLastNames)}`,
+        const newCard = {
+            Name: '',
             Type: Gatcha.Select(Gatcha.CardTypes),
-            Rank: Math.floor(Math.random() * 4) + 1,
-            Material: Gatcha.Select(Gatcha.CardMaterials),
+            Rank: Number(Gatcha.Select(Gatcha.CardRanks)),
+            Material: '',
             Picture: '',
             Description: '',
             Action: '',
@@ -30,6 +76,29 @@ export default class Gatcha {
             Value: 1,
             Stats: [],
         };
+        
+        switch (newCard.Type) {
+            case "Character":
+                newCard.Name = `${Gatcha.Select(Gatcha.CharacterFirstNames)} ${Gatcha.Select(Gatcha.CharacterLastNames)}`;
+                break;
+            case "Weapon":
+                newCard.Name = Gatcha.Select(Gatcha.WeaponTypes);
+                break;
+            case "Equipment":
+                newCard.Name = Gatcha.Select(Gatcha.EquipmentTypes);
+                break;
+            case "Spell":
+                newCard.Name = Gatcha.Select(Gatcha.Spells);
+                break;
+            case "Skill":
+                newCard.Name = Gatcha.Select(Gatcha.Skills);
+                break;
+            case "Creature":
+                newCard.Name = Gatcha.Select(Gatcha.Creatures);
+                break;
+        }
+
+        return newCard;
     }
 
     private static Select(options: CardFieldOptions) {

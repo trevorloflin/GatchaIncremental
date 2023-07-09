@@ -7,7 +7,7 @@ export default function App() {
     const [currentCard, setCurrentCard] = React.useState(null as Card);
 
     const getACard = () => {
-        const card = Gatcha.GenerateCard();
+        const card = Gatcha.GetCard();
 
         setCurrentCard(card);
         setCards([...cards, card]);
