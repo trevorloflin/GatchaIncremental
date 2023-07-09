@@ -143,6 +143,10 @@ export default class BinarySearchTree<T> {
         }
     }
 
+    public getFulcrum() {
+        return this._item;
+    }
+
     public getValue() { 
         if (this._cachedValue == null) {
             this._cachedValue = this._accessor(this._item); 

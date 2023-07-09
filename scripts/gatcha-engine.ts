@@ -38,10 +38,12 @@ export default class Gatcha {
 
         var selectedOption = options[randomKey];
         // uses while for type assertion, should only execute once
-        while (selectedOption == null || typeof selectedOption === 'number') {
+        if (selectedOption == null || typeof selectedOption === 'number') {
             this.GenerateOptionsTable(options);
             selectedOption = options[randomKey];
         }
+        if (typeof selectedOption === 'number')
+            throw 'Options table not fully generated!';
 
         var selectedName = selectedOption._probability > Math.random() 
             ? randomKey 
@@ -52,19 +54,19 @@ export default class Gatcha {
 
     // this uses the "alias" method
     private static GenerateOptionsTable(options: CardFieldOptions) {
-        const count = Object.keys(options).length;
-        const firstOption = Object.keys(options)[0];
-        let sum = 1;
+        const keys = Object.keys(options);
+        const count = keys.length;
+        const firstOption = keys[0];
+        let sum = (Object.values(options) as number[]).reduce((acc, n) => acc + (n ?? 0));
 
         if (options[firstOption] == null) {
-            options[firstOption] = 1 - (Object.values(options) as number[]).reduce((acc, n) => acc + n ?? 0);
-        } else {
-            sum = (Object.values(options) as number[]).reduce((acc, n) => acc + n ?? 0);
-        }
+            options[firstOption] = 1 - sum;
+            sum = 1;
+        } 
 
         const tree = new BinarySearchTree<{ name: string, value: number}>(i => i.value);
 
-        for (const key in options) {
+        for (const key in keys) {
             tree.add({ name: key, value: (options[key] as number) / sum * count });
         }
 
@@ -82,9 +84,9 @@ export default class Gatcha {
 
             tree.add({ name: highest.name, value: highest.value - (1 - lowest.value)});
         }
-        
-        const lastOption = Object.keys(options)[count - 1];
-        options[lastOption] = { weight: options[lastOption] as number, _probability: 1, _alias: null }
+
+        var lastItem = tree.getFulcrum();
+        options[lastItem.name] = { weight: options[lastItem.name] as number, _probability: 1, _alias: null };
 
         console.log('Generated options table:');
         console.log(options);
