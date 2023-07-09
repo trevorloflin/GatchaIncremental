@@ -31,30 +31,62 @@ export default class BinarySearchTree<T> {
 
         const itemComparison = this.compare(item, this._item);
 
-        const lowerItem = (itemComparison < 0) ? { item, cachedValue } : { item: this._item, cachedValue: this._cachedValue };
-        const higherItem = (itemComparison < 0) ? { item: this._item, cachedValue: this._cachedValue } : { item, cachedValue };
-
-        if ((this._lower?._weight ?? 0) < (this._higher?._weight ?? 0)) {
+        if (itemComparison <= 0 && (this._lower?._weight ?? 0) <= (this._higher?._weight ?? 0)) {
             if (this._lower == null) {
-                this._lower = new BinarySearchTree<T>(this._accessor, lowerItem.item);
-                this._lower._cachedValue = lowerItem.cachedValue;
+                this._lower = new BinarySearchTree<T>(this._accessor, item);
             } else {
-                this._lower.add(lowerItem.item, lowerItem.cachedValue);
+                this._lower.add(item);
             }
-
-            this._item = higherItem.item;
-            this._cachedValue = higherItem.cachedValue;
-        } else {
+        } else if (itemComparison >= 0 && (this._lower?._weight ?? 0) >= (this._higher?._weight ?? 0)) {
             if (this._higher == null) {
-                this._higher = new BinarySearchTree<T>(this._accessor, higherItem.item);
-                this._higher._cachedValue = higherItem.cachedValue;
+                this._higher = new BinarySearchTree<T>(this._accessor, item);
             } else {
-                this._higher.add(higherItem.item, higherItem.cachedValue);
+                this._higher.add(item);
             }
+        } else if (itemComparison < 0) {
+            // lower.weight > higher.weight
+            this._lower.add(item);
 
-            this._item = lowerItem.item;
-            this._cachedValue = lowerItem.cachedValue;
+            this._higher.add(this._item, this._cachedValue);
+
+            this._item = this._lower.getHighest();
+            this._cachedValue = this._lower.getHighestCache();
+
+            this._lower.remove(this._lower.getHighest());
+        } else {
+            // lower.weight < higher.weight
+            this._higher.add(item);
+
+            this._lower.add(this._item, this._cachedValue);
+
+            this._item = this._higher.getLowest();
+            this._cachedValue = this._higher.getLowestCache();
         }
+
+        // const lowerItem = (itemComparison < 0) ? { item, cachedValue } : { item: this._item, cachedValue: this._cachedValue };
+        // const higherItem = (itemComparison < 0) ? { item: this._item, cachedValue: this._cachedValue } : { item, cachedValue };
+
+        // if ((this._lower?._weight ?? 0) < (this._higher?._weight ?? 0)) {
+        //     if (this._lower == null) {
+        //         this._lower = new BinarySearchTree<T>(this._accessor, lowerItem.item);
+        //         this._lower._cachedValue = lowerItem.cachedValue;
+        //     } else {
+        //         this._lower.add(lowerItem.item, lowerItem.cachedValue);
+        //     }
+
+        //     this._item = higherItem.item;
+        //     this._cachedValue = higherItem.cachedValue;
+        // } else {
+        //     if (this._higher == null) {
+        //         this._higher = new BinarySearchTree<T>(this._accessor, higherItem.item);
+        //         this._higher._cachedValue = higherItem.cachedValue;
+        //     } else {
+        //         this._higher.add(higherItem.item, higherItem.cachedValue);
+        //     }
+
+        //     this._item = lowerItem.item;
+        //     this._cachedValue = lowerItem.cachedValue;
+        // }
     }
 
     public remove(item: T) {
