@@ -78,9 +78,7 @@ export default class BinarySearchTree<T> {
 
         const itemComparison = this.compare(item, this._item);
 
-        if (itemComparison < 0) {
-            if (this._lower == null) throw `item (${JSON.stringify(item)}) not found in tree!`;
-
+        if (itemComparison <= 0 && this._lower?.hasItem(item)) {
             this._lower.remove(item);
 
             if ((this._lower._weight + 1) < (this._higher?._weight ?? 0)) {
@@ -91,9 +89,7 @@ export default class BinarySearchTree<T> {
 
                 this._higher.remove(this._higher.getLowest());
             }
-        } else {
-            if (this._higher == null) throw `item (${JSON.stringify(item)}) not found in tree!`;
-
+        } else if (itemComparison >= 0 && this._higher?.hasItem(item)) {
             this._higher.remove(item);
 
             if ((this._higher._weight + 1) < (this._lower?._weight ?? 0)) {
@@ -104,6 +100,8 @@ export default class BinarySearchTree<T> {
 
                 this._lower.remove(this._lower.getHighest());
             }
+        } else {
+            throw `item (${JSON.stringify(item)}) not found in tree!`;
         }
     }
 
@@ -115,6 +113,10 @@ export default class BinarySearchTree<T> {
         } else {
             return this._item;
         }
+    }
+
+    public hasItem(item: T) {
+        return this._item === item || (this._lower?.hasItem(item) ?? false) || (this._higher?.hasItem(item) ?? false);
     }
 
     public getLowest(): T {
