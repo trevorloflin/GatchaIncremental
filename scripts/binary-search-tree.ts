@@ -45,9 +45,17 @@ export default class BinarySearchTree<T> {
             }
         } else if (itemComparison < 0) {
             // lower.weight > higher.weight
-            this._lower.add(item);
+            if (this._lower == null) {
+                this._lower = new BinarySearchTree<T>(this._accessor, item);
+            } else {
+                this._lower.add(item);
+            }
 
-            this._higher.add(this._item, this._cachedValue);
+            if (this._higher == null) {
+                this._higher = new BinarySearchTree<T>(this._accessor, this._item);
+            } else {
+                this._higher.add(this._item);
+            }
 
             this._item = this._lower.getHighest();
             this._cachedValue = this._lower.getHighestCache();
@@ -55,9 +63,17 @@ export default class BinarySearchTree<T> {
             this._lower.remove(this._lower.getHighest());
         } else {
             // lower.weight < higher.weight
-            this._higher.add(item);
+            if (this._higher == null) {
+                this._higher = new BinarySearchTree<T>(this._accessor, item);
+            } else {
+                this._higher.add(item);
+            }
 
-            this._lower.add(this._item, this._cachedValue);
+            if (this._lower == null) {
+                this._lower = new BinarySearchTree<T>(this._accessor, this._item);
+            } else {
+                this._lower.add(this._item);
+            }
 
             this._item = this._higher.getLowest();
             this._cachedValue = this._higher.getLowestCache();
